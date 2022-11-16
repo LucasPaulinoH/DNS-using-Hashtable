@@ -1,11 +1,14 @@
 public class DnsAddress {
   private String url; // key
-  private String address; // value
-  public DnsAddress next;
+  private String ip; // value
+  public DnsAddress next,previous;
+  public int frequencyCounter = 0;
 
-  public DnsAddress(String url, String address) {
+  public DnsAddress(String url, String ip) {
     this.url = url;
-    this.address = address;
+    this.ip = ip;
+    this.next = null;
+    this.previous = null;
   }
 
   public String getUrl() {
@@ -17,10 +20,10 @@ public class DnsAddress {
   }
 
   public String getAddress() {
-    return address;
+    return ip;
   }
 
-  public void setAddress(String address) {
-    this.address = address;
+  public void setAddress(String ip) {
+    this.ip = ip;
   }
 }

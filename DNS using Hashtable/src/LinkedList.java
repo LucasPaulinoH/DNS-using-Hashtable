@@ -1,26 +1,11 @@
 public class LinkedList {
   int size;
-  DnsAddress firstAddress;
+  DnsAddress firstAddress, lastAddress;
 
   public LinkedList() {
     this.size = 0;
     this.firstAddress = null;
-  }
-
-  public void insert(String url, String address) {
-    DnsAddress newAddress = new DnsAddress(url, address);
-
-    if (this.firstAddress == null) {
-      this.firstAddress = newAddress;
-    } else {
-      DnsAddress currentAddress = firstAddress;
-
-      while (currentAddress.next != null) {
-        currentAddress = currentAddress.next;
-      }
-      currentAddress.next = newAddress;
-    }
-    size++;
+    this.lastAddress = null;
   }
 
   public DnsAddress get(int index) {
@@ -36,6 +21,101 @@ public class LinkedList {
       return currentAddress;
     } else
       return null;
+  }
+
+  public void insertAtEnd(String url, String ip) {
+    DnsAddress newAddress = new DnsAddress(url, ip);
+
+    if (firstAddress == null) {
+      firstAddress = newAddress;
+      lastAddress = newAddress;
+    } else {
+      newAddress.previous = lastAddress;
+      lastAddress.next = newAddress;
+      lastAddress = newAddress;
+    }
+    size++;
+  }
+
+  public void insertAtBeginning(String url, String ip) {
+    DnsAddress newAddress = new DnsAddress(url, ip);
+
+    if (firstAddress == null) {
+      firstAddress = newAddress;
+      lastAddress = newAddress;
+    } else {
+      newAddress.next = firstAddress;
+      firstAddress.previous = firstAddress;
+      firstAddress = newAddress;
+    }
+    size++;
+  }
+
+  public DnsAddress searchAddress(String url) {
+    DnsAddress finder = firstAddress;
+
+    while (finder != null) {
+      if (finder.getUrl().equals(url)) {
+        System.out.println("Endereço encontrado: "+ finder.getUrl() + " | " + finder.getAddress());
+        finder.frequencyCounter++;
+        return finder;
+      }
+      finder = finder.next;
+    }
+
+    System.out.println("Endereço não encontrado!");
+    return null;
+  }
+
+  public DnsAddress remove(String url) {
+    if (firstAddress == null) {
+      System.out.println("Nenhum endereço removido, lista vazia!");
+      return null;
+    }
+
+    DnsAddress previousAddress = null;
+    DnsAddress removedAddress = searchAddress(url);
+
+    if (removedAddress != null) {
+      previousAddress = removedAddress.previous;
+    }
+
+    if (previousAddress == null) {
+      if (!firstAddress.getUrl().equals(url)) {
+        System.out.println("URL inexistente!");
+        return null;
+      } else {
+        removedAddress = firstAddress;
+
+        if (firstAddress == lastAddress) {
+          firstAddress = null;
+          lastAddress = null;
+        } else {
+          firstAddress = firstAddress.next;
+          firstAddress.previous = null;
+          removedAddress.next = null;
+        }
+      }
+    } else {
+      removedAddress = previousAddress.next;
+
+      if (removedAddress == lastAddress) {
+        lastAddress.previous = null;
+        lastAddress = previousAddress;
+        lastAddress.next = null;
+      } else {
+        DnsAddress forward = removedAddress.next;
+        previousAddress.next = forward;
+        forward.previous = previousAddress;
+
+        removedAddress.next = null;
+        removedAddress.previous = null;
+      }
+    }
+    size--;
+
+    System.out.println("Endereço removido: " + removedAddress.getUrl() + " | " + removedAddress.getAddress());
+    return removedAddress;
   }
 
   public void printList() {
