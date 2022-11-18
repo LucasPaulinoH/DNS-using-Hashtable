@@ -23,7 +23,7 @@ public class LinkedList {
       return null;
   }
 
-  public void insertAtEnd(String url, String ip) {
+  public void insert(String url, String ip) {
     DnsAddress newAddress = new DnsAddress(url, ip);
 
     if (firstAddress == null) {
@@ -37,7 +37,7 @@ public class LinkedList {
     size++;
   }
 
-  public void insertAtBeginning(String url, String ip) {
+  /*public void insertAtBeginning(String url, String ip) {
     DnsAddress newAddress = new DnsAddress(url, ip);
 
     if (firstAddress == null) {
@@ -49,7 +49,7 @@ public class LinkedList {
       firstAddress = newAddress;
     }
     size++;
-  }
+  }*/
 
   public DnsAddress searchAddress(String url) {
     DnsAddress finder = firstAddress;
@@ -62,8 +62,6 @@ public class LinkedList {
       }
       finder = finder.next;
     }
-
-    System.out.println("Endereço não encontrado!");
     return null;
   }
 
