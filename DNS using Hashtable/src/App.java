@@ -8,7 +8,11 @@ public class App {
 
         hashTable.printTable();
 
-        hashTable.resizeTable(100);
+        hashTable.resizeTable();
+
+        hashTable.printTable();
+
+        hashTable.resizeTable();
 
         hashTable.printTable();
 

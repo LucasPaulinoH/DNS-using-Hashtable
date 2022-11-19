@@ -7,12 +7,30 @@ public class HashTable {
     this.table = new LinkedList[size];
   }
 
-  public void resizeTable(int newSize) {
+  public void resizeTable() {
+    switch (this.tableSize) {
+      case 29:
+        adjustTable(61);
+        break;
+      case 61:
+        adjustTable(127);
+        break;
+      case 127:
+        adjustTable(127);
+        break;
+      default:
+        adjustTable(29);
+        break;
+    }
+  }
+
+  private void adjustTable(int newSize) {
     LinkedList[] newTable = new LinkedList[newSize];
     int index;
 
     for (int i = 0; i < this.tableSize; i++) {
       if (table[i] != null) {
+
         for (int j = 0; j < this.table[i].size; j++) {
           if (table[i].get(j) == null) {
             break;
@@ -62,6 +80,7 @@ public class HashTable {
   }
 
   public void printTable() {
+    System.out.println("======================================");
     for (int i = 0; i < this.tableSize; i++) {
       if (table[i] == null) {
         System.out.println("[" + (i) + "]---> ");
@@ -70,6 +89,7 @@ public class HashTable {
         table[i].printList();
       }
     }
+    System.out.println("======================================");
   }
 
   private int hash(String url, int size) {
