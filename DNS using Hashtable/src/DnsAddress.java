@@ -1,14 +1,15 @@
 public class DnsAddress {
   private String url; // key
   private String ip; // value
-  public DnsAddress next,previous;
-  public int frequencyCounter = 0;
+  public DnsAddress next, previous;
+  public int frequencyCounter;
 
   public DnsAddress(String url, String ip) {
     this.url = url;
     this.ip = ip;
     this.next = null;
     this.previous = null;
+    this.frequencyCounter = 0;
   }
 
   public String getUrl() {

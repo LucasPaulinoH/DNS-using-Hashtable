@@ -17,7 +17,6 @@ public class LinkedList {
       for (int i = 0; i < index; i++) {
         currentAddress = currentAddress.next;
       }
-      System.out.println(currentAddress.getUrl() + " | " + currentAddress.getAddress());
       return currentAddress;
     } else
       return null;
@@ -37,32 +36,65 @@ public class LinkedList {
     size++;
   }
 
-  /*public void insertAtBeginning(String url, String ip) {
-    DnsAddress newAddress = new DnsAddress(url, ip);
+  private boolean addressNeedsToBeAdjusted(DnsAddress address){
+    DnsAddress previous = address.previous;
 
-    if (firstAddress == null) {
-      firstAddress = newAddress;
-      lastAddress = newAddress;
-    } else {
-      newAddress.next = firstAddress;
-      firstAddress.previous = firstAddress;
-      firstAddress = newAddress;
+    if(previous == null){
+      return false;
     }
-    size++;
-  }*/
+
+    int comparisonResult = compare(address, previous);
+
+    return comparisonResult > 0;
+  }
+
+
+  private int compare(DnsAddress address, DnsAddress previous) {
+    return address.frequencyCounter - previous.frequencyCounter;
+  }
 
   public DnsAddress searchAddress(String url) {
-    DnsAddress finder = firstAddress;
+    DnsAddress finded = firstAddress;
 
-    while (finder != null) {
-      if (finder.getUrl().equals(url)) {
-        System.out.println("Endereço encontrado: "+ finder.getUrl() + " | " + finder.getAddress());
-        finder.frequencyCounter++;
-        return finder;
+    while (finded != null) {
+      if (finded.getUrl().equals(url)) {
+
+        System.out.println("Endereço encontrado: " + finded.getUrl() + " | " + finded.getAddress());
+        finded.frequencyCounter++;
+        adjustAddress(finded);
+        return finded;
       }
-      finder = finder.next;
+
+      finded = finded.next;
     }
     return null;
+  }
+
+  private void adjustAddress(DnsAddress address){
+    if(!addressNeedsToBeAdjusted(address)){
+      return;
+    }
+
+    DnsAddress previous = address.previous;
+    DnsAddress next = address.next;
+    DnsAddress previousPrevious = previous.previous;
+   
+    if(previousPrevious == null){
+      firstAddress = address;
+    } else{
+      previousPrevious.next = address;
+    }
+
+    address.previous = previousPrevious;
+    address.next = previous;
+
+    previous.previous = address;
+    previous.next = next;
+
+    if(next != null){
+      next.previous = previous;
+    }
+    adjustAddress(address);
   }
 
   public DnsAddress remove(String url) {
@@ -124,7 +156,7 @@ public class LinkedList {
     DnsAddress iterative;
 
     for (iterative = initial; iterative != null; iterative = iterative.next) {
-      System.out.println(iterative.getUrl() + " | " + iterative.getAddress());
+      System.out.println(iterative.getUrl() + " | " + iterative.frequencyCounter);
     }
   }
 }
