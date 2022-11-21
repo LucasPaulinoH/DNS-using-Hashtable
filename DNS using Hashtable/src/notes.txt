@@ -1,4 +1,4 @@
-tamanho inicial da hashtable = 29
+tamanho inicial da hashtable = 29 
 depois de 10 segundos = 61
 depois de 20 segundos = 127
 depois de 30 segundos = 127

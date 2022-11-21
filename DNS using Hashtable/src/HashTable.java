@@ -19,7 +19,7 @@ public class HashTable {
         adjustTable(127);
         break;
       default:
-        adjustTable(29);
+        adjustTable(127);
         break;
     }
   }

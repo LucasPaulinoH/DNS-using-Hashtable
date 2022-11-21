@@ -59,7 +59,7 @@ public class LinkedList {
     while (finded != null) {
       if (finded.getUrl().equals(url)) {
 
-        System.out.println("Endereço encontrado: " + finded.getUrl() + " | " + finded.getAddress());
+        System.out.println(finded.getAddress());
         finded.frequencyCounter++;
         adjustAddress(finded);
         return finded;
@@ -156,7 +156,7 @@ public class LinkedList {
     DnsAddress iterative;
 
     for (iterative = initial; iterative != null; iterative = iterative.next) {
-      System.out.println(iterative.getUrl() + " | " + iterative.frequencyCounter);
+      System.out.println(iterative.getUrl() + " | " + iterative.getAddress());
     }
   }
 }
