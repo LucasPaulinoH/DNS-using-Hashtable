@@ -1,4 +1,4 @@
-tamanho inicial da hashtable = 29 
-depois de 10 segundos = 61
-depois de 20 segundos = 127
-depois de 30 segundos = 127
+p/ 25 endereços = tamanho inicial da hashtable = 29 (2^5 = 32 (primo mais próximo = 29));
+p/ 50 endereços depois de 10 segundos = 61 (2^6 = 64 (primo mais próximo = 61))
+p/ 75 endereços depois de 20 segundos = 127 (2^7 = 128 (primo mais próximo = 127))
+p/ 100 endereços depois de 30 segundos = 127...

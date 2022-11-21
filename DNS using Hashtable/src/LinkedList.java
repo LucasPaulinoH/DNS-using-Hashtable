@@ -32,11 +32,13 @@ public class LinkedList {
         System.out.println(finded.getAddress());
         finded.frequencyCounter++;
         adjustAddress(finded);
+        System.out.println("Endereço encontrado!");
         return finded;
       }
 
       finded = finded.next;
     }
+
     return null;
   }
 
@@ -91,63 +93,58 @@ public class LinkedList {
     return removedAddress;
   }
 
-    public DnsAddress get(int index) {
-      if (index < 0 || index > size){
-        throw new IndexOutOfBoundsException();
-      }
-  
-      DnsAddress currentAddress = firstAddress;
-      if (currentAddress != null) {
-        for (int i = 0; i < index; i++) {
-          currentAddress = currentAddress.next;
-        }
-        return currentAddress;
-      } else
-        return null;
+  public DnsAddress get(int index) {
+    if (index < 0 || index > size) {
+      throw new IndexOutOfBoundsException();
     }
 
+    DnsAddress currentAddress = firstAddress;
+    if (currentAddress != null) {
+      for (int i = 0; i < index; i++) {
+        currentAddress = currentAddress.next;
+      }
+      return currentAddress;
+    } else
+      return null;
+  }
+
   /* ============== MÉTODOS AUXILIARES ============== */
-  private boolean addressNeedsToBeAdjusted(DnsAddress address){
+  private boolean addressNeedsToBeAdjusted(DnsAddress address) {
     DnsAddress previous = address.previous;
 
-    if(previous == null){
+    if (previous == null) {
       return false;
     }
 
-    int comparisonResult = compare(address, previous);
+    int comparisonResult = address.frequencyCounter - previous.frequencyCounter;
 
     return comparisonResult > 0;
   }
 
-
-  private int compare(DnsAddress address, DnsAddress previous) {
-    return address.frequencyCounter - previous.frequencyCounter;
-  }
-
-  private void adjustAddress(DnsAddress address){
-    if(!addressNeedsToBeAdjusted(address)){
+  private void adjustAddress(DnsAddress address) {
+    if (addressNeedsToBeAdjusted(address) == false) {
       return;
     }
 
-    DnsAddress previous = address.previous;
     DnsAddress next = address.next;
+    DnsAddress previous = address.previous;
     DnsAddress previousPrevious = previous.previous;
-   
-    if(previousPrevious == null){
+
+    if (previousPrevious == null) {
       firstAddress = address;
-    } else{
+    } else {
       previousPrevious.next = address;
     }
 
-    address.previous = previousPrevious;
     address.next = previous;
-
-    previous.previous = address;
+    address.previous = previousPrevious;
     previous.next = next;
+    previous.previous = address;
 
-    if(next != null){
+    if (next != null) {
       next.previous = previous;
     }
+    
     adjustAddress(address);
   }
 

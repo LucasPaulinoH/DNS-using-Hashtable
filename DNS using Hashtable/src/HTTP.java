@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class Client {
+public class HTTP {
     private static Scanner sc = new Scanner(System.in);
     public static void main(String[] args) throws Exception {
         int choice = 1;

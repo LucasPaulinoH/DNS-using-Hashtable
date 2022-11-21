@@ -29,13 +29,21 @@ public class HashTable {
   }
 
   public DnsAddress search(String url) {
+    boolean isValid = verifyUrl(url);
     int index = hash(url, tableSize);
 
     if (table[index] == null) {
-      System.out.println("Endereço não encontrado!");
       return null;
     }
     DnsAddress findedAddress = table[index].searchAddress(url);
+
+    if (findedAddress == null) {
+      if (isValid == true) {
+        System.out.println("Endereço digitado incorretamente!");
+      } else {
+        System.out.println("Endereço não cadastrado no servidor!");
+      }
+    }
 
     return findedAddress;
   }
@@ -89,6 +97,24 @@ public class HashTable {
     }
     tableSize = newSize;
     table = newTable;
+  }
+
+  private boolean verifyUrl(String url) {
+    boolean isValid = true;
+
+    for (int i = 0; i < 3; i++) {
+      if (url.charAt(i) != 'w') {
+        isValid = false;
+      }
+    }
+
+    if (isValid == true) {
+      if (url.charAt(3) != '.') {
+        isValid = false;
+      }
+    }
+
+    return isValid;
   }
 
   public void printTable() {
