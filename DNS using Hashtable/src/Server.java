@@ -14,11 +14,14 @@ public class Server {
 
   private Timer timer = new Timer();
 
+  /* Tarefa para que enquanto o número de endereços lidos ainda não 
+     seja o total cadastrado, sejam adicionados de 25 em 25 a cada 
+     10 segundos.  */
   private TimerTask waitTenSecondsToAddAddresses = new TimerTask() {
     @Override
     public void run() {
       if (LinesReadTotal != 100) {
-        addressesTable.resizeTable();
+        addressesTable.resizeTable(); 
         addAddresses();
       } else {
         timer.cancel();
@@ -30,16 +33,20 @@ public class Server {
   public Server() throws FileNotFoundException {
     addressesFile = new File(
         "E:/Faculdadex/UFERSA 2022.1/Estrutura de Dados II/DNS-using-Hashtable/DNS using Hashtable/src/addresses.txt");
-    storeAllAddresses();
-    addressesTable.printTable();
+    
+    storeAllAddresses(); 
 
-    timer.scheduleAtFixedRate(waitTenSecondsToAddAddresses, 10000, 10000);
+    addAddresses(); //adição dos endereços iniciais  
+
+    //adiciona mais endereços a cada 10 segundos
+    timer.scheduleAtFixedRate(waitTenSecondsToAddAddresses, 10000, 10000); 
   }
 
   public void request(String url) {
     addressesTable.search(url);
   }
 
+  /* Realiza a leitura dos endereços e armazená-los em um vetor */
   private void storeAllAddresses() throws FileNotFoundException {
     scan = new Scanner(addressesFile);
 
@@ -50,6 +57,7 @@ public class Server {
     }
   }
 
+  /* Adiciona 25 endereços à tabela hash */
   private void addAddresses() {
     String temporaryString, url = "", ip = "";
     boolean readIp = false;

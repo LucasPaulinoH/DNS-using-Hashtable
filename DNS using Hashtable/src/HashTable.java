@@ -7,6 +7,50 @@ public class HashTable {
     this.table = new LinkedList[size];
   }
 
+  /* ============== MÉTODOS PRINCIPAIS ============== */
+  private int hash(String url, int size) {
+    int hash = 0;
+
+    for (int i = 0; i < url.length(); i++) {
+      hash = ((hash + url.charAt(i)) % size);
+    }
+
+    return hash;
+  }
+
+  public void insert(String url, String ip) {
+    int index = hash(url, tableSize);
+
+    if (table[index] == null) {
+      table[index] = new LinkedList();
+    }
+    table[index].insert(url, ip);
+    table[index].size++;
+  }
+
+  public DnsAddress search(String url) {
+    int index = hash(url, tableSize);
+
+    if (table[index] == null) {
+      System.out.println("Endereço não encontrado!");
+      return null;
+    }
+    DnsAddress findedAddress = table[index].searchAddress(url);
+
+    return findedAddress;
+  }
+
+  public DnsAddress remove(String url) {
+    int index = hash(url, tableSize);
+
+    if (table[index] == null) {
+      System.out.println("Endereço não encontrado!");
+      return null;
+    }
+    return table[index].remove(url);
+  }
+
+  /* ============== MÉTODOS AUXILIARES ============== */
   public void resizeTable() {
     switch (this.tableSize) {
       case 29:
@@ -47,38 +91,6 @@ public class HashTable {
     table = newTable;
   }
 
-  public void insert(String url, String ip) {
-    int index = hash(url, tableSize);
-
-    if (table[index] == null) {
-      table[index] = new LinkedList();
-    }
-    table[index].insert(url, ip);
-    table[index].size++;
-  }
-
-  public DnsAddress remove(String url) {
-    int index = hash(url, tableSize);
-
-    if (table[index] == null) {
-      System.out.println("Endereço não encontrado!");
-      return null;
-    }
-    return table[index].remove(url);
-  }
-
-  public DnsAddress search(String url) {
-    int index = hash(url, tableSize);
-
-    if (table[index] == null) {
-      System.out.println("Endereço não encontrado!");
-      return null;
-    }
-    DnsAddress findedAddress = table[index].searchAddress(url);
-
-    return findedAddress;
-  }
-
   public void printTable() {
     System.out.println("======================================");
     for (int i = 0; i < this.tableSize; i++) {
@@ -90,15 +102,5 @@ public class HashTable {
       }
     }
     System.out.println("======================================");
-  }
-
-  private int hash(String url, int size) {
-    int hash = 0;
-
-    for (int i = 0; i < url.length(); i++) {
-      hash = ((hash + url.charAt(i)) % size);
-    }
-
-    return hash;
   }
 }

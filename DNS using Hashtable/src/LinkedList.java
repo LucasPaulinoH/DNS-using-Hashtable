@@ -8,20 +8,7 @@ public class LinkedList {
     this.lastAddress = null;
   }
 
-  public DnsAddress get(int index) {
-    if (index < 0 || index > size)
-      throw new IndexOutOfBoundsException();
-
-    DnsAddress currentAddress = firstAddress;
-    if (currentAddress != null) {
-      for (int i = 0; i < index; i++) {
-        currentAddress = currentAddress.next;
-      }
-      return currentAddress;
-    } else
-      return null;
-  }
-
+  /* ============== MÉTODOS PRINCIPAIS ============== */
   public void insert(String url, String ip) {
     DnsAddress newAddress = new DnsAddress(url, ip);
 
@@ -34,23 +21,6 @@ public class LinkedList {
       lastAddress = newAddress;
     }
     size++;
-  }
-
-  private boolean addressNeedsToBeAdjusted(DnsAddress address){
-    DnsAddress previous = address.previous;
-
-    if(previous == null){
-      return false;
-    }
-
-    int comparisonResult = compare(address, previous);
-
-    return comparisonResult > 0;
-  }
-
-
-  private int compare(DnsAddress address, DnsAddress previous) {
-    return address.frequencyCounter - previous.frequencyCounter;
   }
 
   public DnsAddress searchAddress(String url) {
@@ -68,33 +38,6 @@ public class LinkedList {
       finded = finded.next;
     }
     return null;
-  }
-
-  private void adjustAddress(DnsAddress address){
-    if(!addressNeedsToBeAdjusted(address)){
-      return;
-    }
-
-    DnsAddress previous = address.previous;
-    DnsAddress next = address.next;
-    DnsAddress previousPrevious = previous.previous;
-   
-    if(previousPrevious == null){
-      firstAddress = address;
-    } else{
-      previousPrevious.next = address;
-    }
-
-    address.previous = previousPrevious;
-    address.next = previous;
-
-    previous.previous = address;
-    previous.next = next;
-
-    if(next != null){
-      next.previous = previous;
-    }
-    adjustAddress(address);
   }
 
   public DnsAddress remove(String url) {
@@ -146,6 +89,66 @@ public class LinkedList {
 
     System.out.println("Endereço removido: " + removedAddress.getUrl() + " | " + removedAddress.getAddress());
     return removedAddress;
+  }
+
+    public DnsAddress get(int index) {
+      if (index < 0 || index > size){
+        throw new IndexOutOfBoundsException();
+      }
+  
+      DnsAddress currentAddress = firstAddress;
+      if (currentAddress != null) {
+        for (int i = 0; i < index; i++) {
+          currentAddress = currentAddress.next;
+        }
+        return currentAddress;
+      } else
+        return null;
+    }
+
+  /* ============== MÉTODOS AUXILIARES ============== */
+  private boolean addressNeedsToBeAdjusted(DnsAddress address){
+    DnsAddress previous = address.previous;
+
+    if(previous == null){
+      return false;
+    }
+
+    int comparisonResult = compare(address, previous);
+
+    return comparisonResult > 0;
+  }
+
+
+  private int compare(DnsAddress address, DnsAddress previous) {
+    return address.frequencyCounter - previous.frequencyCounter;
+  }
+
+  private void adjustAddress(DnsAddress address){
+    if(!addressNeedsToBeAdjusted(address)){
+      return;
+    }
+
+    DnsAddress previous = address.previous;
+    DnsAddress next = address.next;
+    DnsAddress previousPrevious = previous.previous;
+   
+    if(previousPrevious == null){
+      firstAddress = address;
+    } else{
+      previousPrevious.next = address;
+    }
+
+    address.previous = previousPrevious;
+    address.next = previous;
+
+    previous.previous = address;
+    previous.next = next;
+
+    if(next != null){
+      next.previous = previous;
+    }
+    adjustAddress(address);
   }
 
   public void printList() {
